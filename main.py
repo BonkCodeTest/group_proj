@@ -51,10 +51,10 @@ def upload_file(window: pg.Window, file_path: str) -> Optional[pd.DataFrame]:
     return df_main
 
 
-def get_data(dataframe: pd.DataFrame, x_column_name: str, y_column_name: str) -> [pd.DataFrame, pd.DataFrame]:
-    x_data = dataframe[x_column_name]
-    y_data = dataframe[y_column_name]
-    return x_data, y_data
+def get_data(dataframe: pd.DataFrame, x_column_name: str, y_column_name: str) -> pd.DataFrame:
+    data = dataframe[[x_column_name, y_column_name]]
+    data.columns = ['X', 'Y']
+    return data
 
 
 def setup_layout() -> List:
@@ -87,6 +87,7 @@ if __name__ == '__main__':
         elif event == 'Загрузить файл' and file_path is not None:
             df_main = upload_file(window, file_path)
         elif event == 'Показать график' and df_main is not None:
-            x_data, y_data = get_data(df_main, values['-O-MENU-X-'], values['-O-MENU-Y-'])
+            data = get_data(df_main, values['-O-MENU-X-'], values['-O-MENU-Y-'])
+            print(data)
     # closing the window
     window.close()
